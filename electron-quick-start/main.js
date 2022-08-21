@@ -1,7 +1,8 @@
 // Modules to control application life and create native browser window
-const {app, BrowserWindow, ipcMain} = require('electron')
+const {app, BrowserWindow, ipcMain, dialog, globalShortcut, Menu, MenuItem} = require('electron')
 const url = require('url');
 const path = require('path')
+const icon = path.join(__dirname , './icon.png')
 
 let mainWindow
 
@@ -14,7 +15,7 @@ function createWindow () {
       nodeIntegration: true
     },
     
-    icon: path.join(__dirname , './icon.png')
+    icon:  icon
   })
 
 
@@ -26,24 +27,58 @@ function createWindow () {
   }));
 
   
-  mainWindow.maximize();
+ mainWindow.on('closed',function() {
+  mainWindow = null
+ })
 
-  // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
+ globalShortcut.register('CmdOrCtrl+j', () => {
+    console.log(new Date().toISOString());
+ });
+
+ globalShortcut.register('Alt+j', () => {
+  dialog.showMessageBox({icon: icon, title: 'shortcut teste', message: 'ok'});
+});
 }
+
+const menu = Menu.buildFromTemplate([
+  {
+    label: "teste",
+    sublabel: 'sublabel'
+    
+  },
+  {
+    label: 'Edit',
+    submenu: [
+      {
+        role: 'undo'
+      },
+      {
+        role: 'undo'
+      },
+      {
+        role: 'undo'
+      },
+      {
+        role: 'undo'
+      },
+      {
+        role: 'undo'
+      },
+      {
+        role: 'undo'
+      },
+    ]
+  }
+])
+
+Menu.setApplicationMenu(menu);
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.whenReady().then(() => {
-  createWindow()
+app.on('ready',createWindow)
 
-  app.on('activate', function () {
-    // On macOS it's common to re-create a window in the app when the
-    // dock icon is clicked and there are no other windows open.
-    if (BrowserWindow.getAllWindows().length === 0) createWindow()
-  })
-})
+
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
@@ -52,8 +87,83 @@ app.on('window-all-closed', function () {
   if (process.platform !== 'darwin') app.quit()
 })
 
+
+app.on('activate', function () {
+  // On macOS it's common to re-create a window in the app when the
+  // dock icon is clicked and there are no other windows open.
+  if (mainWindow === null) {
+    createWindow()
+}
+})
+
+
+
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
 
 //IPCMAIN
 
+ipcMain.on("dialog-1", (event, args) => {
+  dialog.showErrorBox("404","file not found");
+})
+
+ipcMain.on("dialog-2", (event, args) => {
+  dialog.showMessageBox({
+    title:"Titulo",
+    message:"Mensagem simples",
+    detail: "detalhamento da mensagem",
+    icon: icon,
+    buttons: ["Ok", "Cancelar", "teste 1","Teste 2"]
+
+  },
+    (response, checkboxChecked) => {
+      console.log(response);
+  });
+})
+
+ipcMain.on("dialog-3", (event, args) => {
+  dialog.showOpenDialog({
+    title: "Procurando arquivo html..",
+    buttonLabel: "Arquivo Html",
+    message: "mensagem",
+    properties:['openFile', 'multiSelections'],
+    filters: [
+      {
+        name: "All",
+        extensions: ['*']
+      },
+      {
+        name: "Página da Web",
+        extensions: ["htm", "html"]
+      }
+
+    ]
+  }, (filePaths, bookmarks) => {
+    console.log(filePaths, bookmarks)
+  })
+})
+
+ipcMain.on("dialog-4", (event, args) => {
+  dialog.showSaveDialog({
+    title: "Salvando arquivo HTML",
+    message: "message",
+    buttonLabel: "Salvar HTML",
+    nameFieldLabel: "Nome Arquivo",
+    filters: [
+      {
+        name: "All",
+        extensions: ['*']
+      },
+      {
+        name: "Texto",
+        extensions: ["txt"]
+      },
+      {
+        name: "Página da WEB",
+        extensions: ["htm", "html"]
+      },
+    ]
+  }, (filename, bookmark) => {
+    console.log(file)
+  });
+})

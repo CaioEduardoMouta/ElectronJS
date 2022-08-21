@@ -5,8 +5,20 @@
 // selectively enable features needed in the rendering
 // process.
 
-const fs = require('fs');
+const { ipcRenderer } = require("electron");
 
-var content = fs.readFileSync(__dirname + '/index.html');
+document.querySelector("#dialog-1").onclick = () => {
+    ipcRenderer.send("dialog-1")
+}
 
-document.querySelector("#teste").innerHTML = content;
+document.querySelector("#dialog-2").onclick = () => {
+    ipcRenderer.send("dialog-2")
+}
+
+document.querySelector("#dialog-3").onclick = () => {
+    ipcRenderer.send("dialog-3")
+}
+
+document.querySelector("#dialog-4").onclick = () => {
+    ipcRenderer.send("dialog-4")
+}
