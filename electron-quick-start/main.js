@@ -31,6 +31,8 @@ function createWindow () {
   mainWindow = null
  })
 
+
+
  globalShortcut.register('CmdOrCtrl+j', () => {
     console.log(new Date().toISOString());
  });
@@ -43,29 +45,102 @@ function createWindow () {
 const menu = Menu.buildFromTemplate([
   {
     label: "teste",
-    sublabel: 'sublabel'
+    sublabel: 'sublabel',
+    submenu: [
+      {
+        label: 'nivel 2-1',
+        submenu: [
+          {
+            label: 'nivel 3',
+            icon: icon,
+          }
+        ]
+
+      },
+      {
+        label: 'nivel 2-2',
+        click: (MenuItem, BrowserWindow, event) => {
+          console.log(event);
+          console.log(new Date().toISOString());
+        }
+      },
+      {
+        label: 'nivel 2-3',
+        accelerator: 'CmdOrCtrl+J',
+        registerAccelerator: true
+      },
+      {
+        label: 'nivel 2-4',
+        accelerator: 'CmdOrCtrl+K',
+        registerAccelerator: true,
+        click: () => {
+          console.log(new Date().toISOString());
+        }
+      },
+    ]
     
   },
   {
     label: 'Edit',
     submenu: [
       {
+        label: 'Desfazer',
         role: 'undo'
       },
       {
-        role: 'undo'
+        label: 'Refazer',
+        role: 'redo'
       },
       {
-        role: 'undo'
+        type: 'separator'
       },
       {
-        role: 'undo'
+        label: 'Cortar',
+        role: 'cut'
       },
       {
-        role: 'undo'
+        label: 'Copiar',
+        role: 'copy'
       },
       {
-        role: 'undo'
+        label: 'Colar',
+        role: 'paste'
+      },
+  
+    ]
+  },
+  {
+    label: 'Visualizador',
+    submenu: [
+      {
+        role: 'reload'
+      },
+      {
+        role: 'toggledevtools'
+      },
+      {
+        role: 'resetzoom'
+      },
+      {
+        role: 'zoomin'
+      },
+      {
+        role: 'zoomout'
+      },
+      {
+        role: 'togglefullscreen'
+      }
+    ]
+  },
+  {
+    label: 'janela',
+    role: 'window',
+    submenu: [
+      {
+        role: 'minimize'
+      },
+      {
+        role: 'close'
       },
     ]
   }

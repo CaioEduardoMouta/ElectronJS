@@ -5,20 +5,34 @@
 // selectively enable features needed in the rendering
 // process.
 
-const { ipcRenderer } = require("electron");
+const { remote } = require("electron");
+const { Menu, MenuItem } = remote;
 
-document.querySelector("#dialog-1").onclick = () => {
-    ipcRenderer.send("dialog-1")
-}
+const menu = new Menu();
 
-document.querySelector("#dialog-2").onclick = () => {
-    ipcRenderer.send("dialog-2")
-}
+menu.append(new MenuItem({
+    label: 'Item 1',
+    type: "checkbox"
+}))
 
-document.querySelector("#dialog-3").onclick = () => {
-    ipcRenderer.send("dialog-3")
-}
+menu.append(new MenuItem({ label: 'Item 3' }));
 
-document.querySelector("#dialog-4").onclick = () => {
-    ipcRenderer.send("dialog-4")
-}
+menu.append(new MenuItem({ type: "separator" }));
+menu.append(new MenuItem({ 
+            label: 'Item 3', 
+            submenu: [
+                {
+                   label: 'tecla do atalho',
+                   accelerator: 'Alt+L',
+                   registerAccelerator: true,
+                   click: () => {
+                    console.log("Alt+L");
+                   }
+                }
+            ] 
+        }))
+
+window.addEventListener('contextMenu',(e) => {
+    e.preventDefault();
+    menu.popup(remote.getCurrentWindow());
+})
