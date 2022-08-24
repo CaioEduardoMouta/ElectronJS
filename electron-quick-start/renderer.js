@@ -5,12 +5,53 @@
 // selectively enable features needed in the rendering
 // process.
 
-const { remote } = require("electron");
-const { Menu, MenuItem } = remote;
+window.onload = () => {
+    const webview = document.querySelector("#webview")
+    const loading = document.querySelector(".loading")
 
-const menu = new Menu();
+    webview.addEventListener("did-start-loading",() => {
+        loading.innerHTML = 'Carregando...'
+    })
 
-menu.append(new MenuItem({
+    webview.addEventListener("did-stop-loading",() => {
+        loading.innerHTML = ''
+    })
+
+    webview.addEventListener("dom-ready",() => {
+        console.log("dom carregado");
+    })
+}
+
+/* const notifier = require("node-notifier");
+const path = require("path");
+
+document.querySelector("#notify").onclick = () => {
+    notifier.notify({
+        title:"titulo notify",
+        message: "mensagem notify",
+        icon:path.join(__dirname, "icon.png"),
+        wait: true,
+        sound: true
+    }, (err, response) => {
+        console.log(err, response);
+    });
+    
+    notifier.on('click', () => {
+        console.log("click")
+    });
+
+    notifier.on("timeout",() => {
+        console.log("timeout");
+    })
+} */
+
+//const { remote } = require("electron");
+//const { Menu, MenuItem } = remote;
+
+//const menu = new Menu();
+
+
+/* menu.append(new MenuItem({
     label: 'Item 1',
     type: "checkbox"
 }))
@@ -35,4 +76,4 @@ menu.append(new MenuItem({
 window.addEventListener('contextMenu',(e) => {
     e.preventDefault();
     menu.popup(remote.getCurrentWindow());
-})
+}) */

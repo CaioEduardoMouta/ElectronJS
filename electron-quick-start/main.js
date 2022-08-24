@@ -1,5 +1,5 @@
 // Modules to control application life and create native browser window
-const {app, BrowserWindow, ipcMain, dialog, globalShortcut, Menu, MenuItem} = require('electron')
+const {app, BrowserWindow, ipcMain, dialog, globalShortcut, Menu, MenuItem, Tray} = require('electron')
 const url = require('url');
 const path = require('path')
 const icon = path.join(__dirname , './icon.png')
@@ -31,15 +31,8 @@ function createWindow () {
   mainWindow = null
  })
 
+ 
 
-
- globalShortcut.register('CmdOrCtrl+j', () => {
-    console.log(new Date().toISOString());
- });
-
- globalShortcut.register('Alt+j', () => {
-  dialog.showMessageBox({icon: icon, title: 'shortcut teste', message: 'ok'});
-});
 }
 
 const menu = Menu.buildFromTemplate([
@@ -176,7 +169,7 @@ app.on('activate', function () {
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
 
-//IPCMAIN
+/* //IPCMAIN
 
 ipcMain.on("dialog-1", (event, args) => {
   dialog.showErrorBox("404","file not found");
@@ -241,4 +234,4 @@ ipcMain.on("dialog-4", (event, args) => {
   }, (filename, bookmark) => {
     console.log(file)
   });
-})
+}) */

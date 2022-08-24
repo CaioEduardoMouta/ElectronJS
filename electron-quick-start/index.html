@@ -15,12 +15,15 @@
 
     <hr>
 
-    <button id="dialog-1">Dialog 1</button><br>
-    <button id="dialog-2">Dialog 2</button><br>
-    <button id="dialog-3">Dialog 3</button><br>
-    <button id="dialog-4">Dialog 4</button><br>
+    <webview id="webview" src="http://google.com" autoajust style="width: 500px; height:500px;">
+      <div class="loading"></div>
+    </webview>
+
+    <!-- <button id="notify">Notificação</button> -->
 
     <!-- You can also require other files to run in this process -->
-    <script src="./renderer.js"></script>
+    <script>
+      require("./renderer.js")
+    </script>
   </body>
 </html>
