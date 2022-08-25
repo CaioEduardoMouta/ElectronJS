@@ -5,7 +5,24 @@
 // selectively enable features needed in the rendering
 // process.
 
-window.onload = () => {
+navigator.getUserMedia({
+    audio: true,
+    video: true,
+}, 
+    (localMediaStream) => {
+        const video = document.querySelector("video")
+        video.src = window.URL.createObjectURL(localMediaStream);
+        video.onloadedmetadata = (event) => {
+            console.log("pronto");
+        }
+    },
+    (error) => {
+        console.error(error);
+    }
+)
+
+
+/* window.onload = () => {
     const webview = document.querySelector("#webview")
     const loading = document.querySelector(".loading")
 
@@ -20,7 +37,7 @@ window.onload = () => {
     webview.addEventListener("dom-ready",() => {
         console.log("dom carregado");
     })
-}
+} */
 
 /* const notifier = require("node-notifier");
 const path = require("path");
